@@ -10,6 +10,7 @@ let medi = new Schema({
   regDate: { type: Date, default: new Date() },
   shopId: ObjectId,
   stock:Number,
+  price:Number
   
 });
 

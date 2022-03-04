@@ -1,4 +1,8 @@
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+var User = require("../models/user");
+const { ObjectId } = require("mongodb");
+
 
 exports.auth = async (req, res, next) => {
   try {
@@ -10,11 +14,13 @@ exports.auth = async (req, res, next) => {
 
       req.userId = decodedData?._id;
       req.userMobile = decodedData?.mobile;
+      
       console.log("AUTHORIZED USER");
       next();
     });
   } catch (error) {
     if (error) {
+      console.log(error)
       res.json({ message: "no token" });
     }
   }
@@ -42,8 +48,9 @@ exports.isAdmin = (req, res, next) => {
 exports.isShopkeeper = (req, res, next) => {
   try {
     User.findOne({ _id: ObjectId(req.userId) }).then((management) => {
-      console.log(management);
+      
       if (management.role === 2) {
+        req.shopName=management?.shop?.name
         console.log("VERIFIED SHOPKEEPER");
         next();
       } else {

@@ -18,5 +18,26 @@ module.exports = {
     check("otp").isLength(4),
     check("password").trim().isLength({ min: 3 }),
   ],
-  verifyMobileValidator:[check("mobile").isMobilePhone()],
+  verifyMobileValidator: [check("mobile").isMobilePhone()],
+  addMediValidator: [
+    check("name").trim().isLength({ min: 3 }),
+    check("companyName").trim().exists().notEmpty(),
+    check("dose").isArray(),
+    check("stock").trim().exists().notEmpty(),
+    check("price").trim().exists().notEmpty()
+  ],
+  editMediValidator:[
+    check("_id").isMongoId(),
+    check("name").trim().isLength({ min: 3 }),
+    check("companyName").trim().exists().notEmpty(),
+    check("dose").isArray(),
+    check("stock").trim().exists().notEmpty(),
+    check("price").trim().exists().notEmpty()
+  ],
+  idValidator:[
+    check("_id").isMongoId()
+  ],
+  suggestionValidator:[
+    check('data').trim().exists().notEmpty()
+  ]
 };
