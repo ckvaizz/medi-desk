@@ -18,4 +18,5 @@ module.exports = {
     check("otp").isLength(4),
     check("password").trim().isLength({ min: 3 }),
   ],
+  verifyMobileValidator:[check("mobile").isMobilePhone()],
 };

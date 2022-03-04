@@ -5,9 +5,10 @@ const {
   signupValidator,
   otpValidator,
   createPasswordValidator,
+  verifyMobileValidator,
 } = require("../middleware/validator");
 const { checkValidator } = require("../middleware/auth");
-const { login, signup, verifyOTP, createPassword } = require("../controllers/auth");
+const { login, signup, verifyOTP, createPassword, verifyMobile } = require("../controllers/auth");
 
 
 
@@ -19,4 +20,5 @@ router.post("/verify-otp", otpValidator, checkValidator, verifyOTP);
 
 router.post("/create-password",createPasswordValidator,checkValidator,createPassword)
 
+router.post("/verify-mobile",verifyMobileValidator,checkValidator,verifyMobile)
 module.exports = router;

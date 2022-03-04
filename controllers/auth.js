@@ -70,7 +70,7 @@ exports.signup = async (req, res) => {
 exports.verifyOTP = async (req, res) => {
   try {
     const { mobile, otp } = req.body;
-    checkOtpHelper(mobile, otp)
+    checkOtpHelper(mobile,otp)
       .then(async (data) => {
         if (data.status === "approved") {
           if (
@@ -98,6 +98,21 @@ exports.createPassword = async (req, res) => {
       res.json({ status: true });
     else res.json({ status: false, message: "Failed" });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ status: false, message: "something went wrong" });
   }
 };
+
+exports.verifyMobile=async(req,res)=>{
+  try {
+    const {mobile}=req.body
+    let user = await User.findOne({mobile})
+    if(user){
+      sendOtpHelper(mobile)
+          .then((data) => res.json(data))
+          .catch((err) => res.json(err));
+    }else res.json({status:false,message:'Mobile not registered'})
+  } catch (error) {
+    res.status(500).json({ status: false, message: "something went wrong" });
+  }
+}
