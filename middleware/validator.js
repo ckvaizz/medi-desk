@@ -39,5 +39,8 @@ module.exports = {
   ],
   suggestionValidator:[
     check('data').trim().exists().notEmpty()
+  ],
+  statusValidator:[
+    check('status').isBoolean()
   ]
 };

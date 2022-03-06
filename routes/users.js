@@ -1,9 +1,11 @@
 var express = require('express');
+
+const { getShopkeepers } = require('../controllers/users');
 var router = express.Router();
+const { auth, isAdmin, checkValidator }=require('../middleware/auth');
+const { statusValidator, idValidator } = require('../middleware/validator');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post('/get',auth,isAdmin,statusValidator,checkValidator,getShopkeepers)
 
+router.post('delete',auth,isAdmin,idValidator,checkValidator,deleteUser)
 module.exports = router;
