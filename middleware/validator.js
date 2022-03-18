@@ -42,5 +42,14 @@ module.exports = {
   ],
   statusValidator:[
     check('status').isBoolean()
+  ],bookSlotValidator:[
+    check('time').trim().exists().notEmpty(),
+    check('name').trim().exists().notEmpty(),
+    check('cart').isObject(),
+    check('shopId').isMongoId(),
+
+  ],
+  getSlotValidator:[
+    check('shopId').isMongoId(),
   ]
 };

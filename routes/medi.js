@@ -5,6 +5,8 @@ const {
   editMediValidator,
   idValidator,
   suggestionValidator,
+  bookSlotValidator,
+  getSlotValidator,
 } = require("../middleware/validator");
 const { checkValidator, auth, isShopkeeper } = require("../middleware/auth");
 const {
@@ -14,6 +16,9 @@ const {
   getMedibyName,
   getSksMedi,
   getSuggestion,
+  bookSlot,
+  viewAllSlots,
+  getSlots,
 } = require("../controllers/medi");
 
 router.post(
@@ -60,5 +65,11 @@ router.post(
   checkValidator,
   getSuggestion
 );
+
+router.post("/get-slot", auth, getSlotValidator, checkValidator, getSlots);
+
+router.post("/book-slot", auth, bookSlotValidator, checkValidator, bookSlot);
+
+router.get("/view-slot/:time", auth, isShopkeeper, viewAllSlots);
 
 module.exports = router;
