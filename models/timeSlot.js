@@ -6,7 +6,8 @@ let slots = new Schema({
   shopId: ObjectId,
   day: { type: String, default: new Date().toLocaleDateString() },
   cart:Array,
-  time:String
+  time:String,
+  name:String
 });
 
 const model = mongoose.model("Slot", slots);

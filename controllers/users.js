@@ -34,3 +34,27 @@ exports.approveSk=async(req,res)=>{
         res.json({status:false,message:'something wrong'})
     }
 }
+
+exports.getDetails=async(req,res)=>{
+try {
+    const {id} = req.params
+    const user = await User.findOne({_id:id})
+    res.json({status:true,shop:user.shop})
+} catch (error) {
+    res.json({status:false,message:'something went wrong'})
+}
+}
+
+exports.editProfile=async(req,res)=>{
+try {
+    const {_id,shop,name,mobile}=req.body
+    if((await User.updateOne({_id},{shop,name,mobile})).modifiedCount ==1){
+        res.json({status:true})
+    }else{
+        res.json({status:false,message:'something wrong'})
+    }
+
+} catch (error) {
+    res.json({status:false,message:'somthing wrong'})
+}
+}

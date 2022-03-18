@@ -51,5 +51,11 @@ module.exports = {
   ],
   getSlotValidator:[
     check('shopId').isMongoId(),
+  ],
+  editValidator:[
+    check('_id').isMongoId(),
+    check('name').trim().exists().notEmpty(),
+    check("mobile").trim().isMobilePhone(),
+    check("shop").isObject()
   ]
 };
