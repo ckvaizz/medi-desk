@@ -9,8 +9,8 @@ let medi = new Schema({
   dose:Array,
   regDate: { type: Date, default: new Date() },
   shopId: ObjectId,
-  stock:Number,
-  price:Number
+ shopNumber:String,
+ shopLandmark:String
   
 });
 

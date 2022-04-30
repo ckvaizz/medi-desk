@@ -13,6 +13,7 @@ let users = new Schema({
     name: String,
     email: String,
     lisenceNO: String,
+    landmark:String
   },
   otp: String,
 });

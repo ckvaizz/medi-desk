@@ -23,16 +23,14 @@ module.exports = {
     check("name").trim().isLength({ min: 3 }),
     check("companyName").trim().exists().notEmpty(),
     check("dose").isArray(),
-    check("stock").trim().exists().notEmpty(),
-    check("price").trim().exists().notEmpty()
+    
   ],
   editMediValidator:[
     check("_id").isMongoId(),
     check("name").trim().isLength({ min: 3 }),
     check("companyName").trim().exists().notEmpty(),
     check("dose").isArray(),
-    check("stock").trim().exists().notEmpty(),
-    check("price").trim().exists().notEmpty()
+   
   ],
   idValidator:[
     check("_id").isMongoId()
@@ -47,6 +45,8 @@ module.exports = {
     check('name').trim().exists().notEmpty(),
     check('cart').isObject(),
     check('shopId').isMongoId(),
+    check('_id').isMongoId(),
+    check('bal').trim().exists().notEmpty()
 
   ],
   getSlotValidator:[

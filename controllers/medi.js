@@ -3,16 +3,16 @@ const Slot = require("../models/timeSlot");
 
 exports.addMedi = async (req, res) => {
   try {
-    const { companyName, name, dose, stock, price } = req.body;
-    const { userId, shopName } = req;
+    const { companyName, name, dose } = req.body;
+    const { userId, shopName, shopNumber, shopLandmark } = req;
     await Medi.create({
       name,
       companyName,
       dose,
-      stock,
+      shopLandmark,
       shopId: userId,
       shopName,
-      price,
+      shopNumber,
     });
     res.json({ status: true });
   } catch (error) {
@@ -22,13 +22,13 @@ exports.addMedi = async (req, res) => {
 
 exports.editMedi = async (req, res) => {
   try {
-    const { _id, companyName, name, dose, stock, price } = req.body;
-    const { userId, shopName } = req;
+    const { _id, companyName, name, dose } = req.body;
+    const { userId } = req;
     if (
       (
         await Medi.updateOne(
           { _id, shopId: userId },
-          { companyName, name, dose, stock, price }
+          { companyName, name, dose }
         )
       ).modifiedCount === 1
     )
@@ -86,11 +86,11 @@ exports.getSuggestion = async (req, res) => {
 exports.viewAllSlots = async (req, res) => {
   try {
     const { userId } = req;
-    const {time} = req.params
+    const { time } = req.params;
     const slots = await Slot.find({
       shopId: userId,
       day: new Date().toLocaleDateString(),
-      time
+      time,
     });
     res.json({ status: true, slots });
   } catch (error) {
@@ -100,7 +100,7 @@ exports.viewAllSlots = async (req, res) => {
 
 exports.bookSlot = async (req, res) => {
   try {
-    const { shopId, cart, time, name } = req.body;
+    const { _id, shopId, cart, time, name, bal } = req.body;
     const { userId } = req;
     const currentTime = new Date().getHours();
     const bookingTime =
@@ -130,9 +130,17 @@ exports.bookSlot = async (req, res) => {
               )
             ).modifiedCount == 1
           )
-            res.json({ status: true, message: "slot booked" });
+            await Medi.updateOne(
+              { _id, "dose.dose": cart.dose.dose },
+              { $set: { "dose.$.stock": bal } }
+            );
+          res.json({ status: true, message: "slot booked" });
         } else {
           await Slot.create({ shopId, cart: [cart], time, userId, name });
+          await Medi.updateOne(
+            { _id, "dose.dose": cart.dose.dose },
+            { $set: { "dose.$.stock": bal } }
+          );
           res.json({ status: true, message: "slot booked" });
         }
       }
@@ -155,8 +163,7 @@ exports.getSlots = async (req, res) => {
     for (let i = 0; i <= 12; i++) {
       slotStatus[i] = slots.filter((s) => s.time == i).length;
     }
-       res.json({status:true,slots,slotStatus})
-
+    res.json({ status: true, slots, slotStatus });
   } catch (error) {
     res.json({ status: false, message: "something went wrong" });
   }

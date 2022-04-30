@@ -47,10 +47,12 @@ exports.isAdmin = (req, res, next) => {
 
 exports.isShopkeeper = (req, res, next) => {
   try {
-    User.findOne({ _id: ObjectId(req.userId) }).then((management) => {
+    User.findOne({ _id: ObjectId(req.userId) }).then((shopkeeper) => {
       
-      if (management.role === 2) {
-        req.shopName=management?.shop?.name
+      if (shopkeeper.role === 2) {
+        req.shopName=shopkeeper?.shop?.name
+        req.shopNumber=shopkeeper?.mobile
+        req.shopLandmark=shopkeeper?.shop.landmark
         console.log("VERIFIED SHOPKEEPER");
         next();
       } else {
@@ -71,7 +73,7 @@ exports.checkValidator = (req, res, next) => {
   
       if (errors.isEmpty()) next();
       else
-        res.status(400).json({ status: false, message: " Missing some datas" });
+      res.status(400).json({ status: false, message: " Missing some datas" });
     } catch (error) {
       res.status(500).json({ status: false, message: "something went wrong" });
     }
